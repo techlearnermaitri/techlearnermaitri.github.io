@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your Name · Portfolio</title>
+<meta name="description" content="Portfolio of Maitri (唐露娟): ML, NLP, big data and physical AI projects.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Courier+Prime:wght@400;700&family=Pixelify+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#1a1ad0;--grey:#c0c0c0;--navy:#0a0a8a;
+--cur:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='28' shape-rendering='crispEdges'%3E%3Cpath d='M1 1v20l5-5 4 9 3-1-4-9h7z' fill='white' stroke='black' stroke-width='1.6'/%3E%3C/svg%3E") 1 1,auto}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;overflow:hidden}
+body{font:400 15px/1.5 'Courier Prime',monospace;color:#111;cursor:var(--cur);background:#1d46d8}
+button,a,summary{cursor:var(--cur);font-family:inherit}
+:focus-visible{outline:2px dotted #000;outline-offset:2px}
+.px{font-family:'Pixelify Sans',monospace}
+/* sky + hills */
+#sky{position:fixed;inset:0;background:linear-gradient(#0c2fc0,#2a63e8 55%,#79b2ff);overflow:hidden}
+.cloud{position:absolute;border-radius:50%;background:radial-gradient(ellipse,#fff 0,rgba(255,255,255,.88) 38%,transparent 70%);filter:blur(7px);animation:drift linear infinite}
+@keyframes drift{from{transform:translateX(-30vw)}to{transform:translateX(130vw)}}
+#hills{position:fixed;left:0;bottom:0;width:100%;height:46vh}
+/* bevels */
+.raise{border:2px solid;border-color:#fff #404040 #404040 #fff;box-shadow:inset -1px -1px #808080,inset 1px 1px #dfdfdf}
+.b95{background:var(--grey);color:#111;font:400 15px 'Pixelify Sans',monospace;padding:6px 20px;border:2px solid;border-color:#fff #404040 #404040 #fff;box-shadow:inset -1px -1px #808080,inset 1px 1px #dfdfdf}
+.b95:active,.b95.on{border-color:#404040 #fff #fff #404040;box-shadow:inset 1px 1px #808080}
+.b95.big{outline:3px solid #000;padding:8px 70px;font-size:18px}
+/* boot screen */
+#boot{position:fixed;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff;transition:opacity .6s;padding:20px}
+#boot.off{opacity:0;pointer-events:none}
+#boot small{font:400 clamp(.9rem,2vw,1.2rem) 'Courier Prime';font-weight:700;text-shadow:0 2px 0 #00104a}
+#ptf{font:400 clamp(3rem,12.5vw,10rem)/1.05 'Bagel Fat One',sans-serif;margin:10px 0 24px;transform:skewX(-7deg);filter:drop-shadow(0 7px 8px rgba(0,20,110,.6));user-select:none}
+#ptf span{display:inline-block;background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(140,185,255,.28) 52%,rgba(255,255,255,.65));-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.75);transition:transform .3s cubic-bezier(.2,.9,.3,1.6)}
+#ptf span:hover{transform:translateY(-14px) rotate(6deg) scale(1.1)}
+#boot h1{font:600 clamp(2rem,5vw,3rem) 'Pixelify Sans';text-shadow:3px 3px 0 #00104a;margin-bottom:18px}
+#boot p{font-weight:700;margin-bottom:6px;text-shadow:0 2px 0 #00104a}
+#boot .b95{margin-top:70px}
+/* desktop */
+#desk{position:fixed;inset:0;z-index:4}
+#icons{position:absolute;left:14px;top:14px;display:grid;gap:10px;grid-auto-flow:row}
+.ico{width:96px;background:none;border:0;color:#fff;text-align:center;font:400 14px/1.2 'Pixelify Sans';text-shadow:1px 1px 0 #000,0 0 6px #003;padding:6px 2px}
+.ico i{display:block;font-style:normal;font-size:38px;filter:drop-shadow(2px 2px 0 rgba(0,0,0,.4));transition:transform .15s}
+.ico:hover i{transform:translateY(-4px)}
+.ico:focus-visible,.ico:hover span{background:var(--navy)}
+#layer{position:absolute;inset:0 0 40px 0;pointer-events:none}
+.win{position:absolute;pointer-events:auto;background:var(--grey);border:2px solid;border-color:#fff #404040 #404040 #fff;box-shadow:inset -1px -1px #808080,inset 1px 1px #dfdfdf,6px 6px 0 rgba(0,10,80,.35);display:flex;flex-direction:column;max-height:calc(100vh - 56px);animation:pop .22s steps(5)}
+@keyframes pop{from{transform:scale(.88);opacity:0}}
+.win.max{left:0!important;top:0!important;width:100%!important;height:calc(100vh - 40px)!important;max-height:none}
+.tb{display:flex;justify-content:space-between;align-items:center;gap:8px;background:linear-gradient(90deg,#7a7a7a,#9a9a9a);color:#ddd;font:400 15px 'Pixelify Sans';padding:3px 4px 3px 8px;touch-action:none;user-select:none}
+.win.active .tb{background:linear-gradient(90deg,var(--navy),#2f66f0);color:#fff}
+.tb span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tbtn{display:flex;gap:3px}
+.tbtn button{width:22px;height:20px;padding:0;font:600 14px/1 'Pixelify Sans';background:var(--grey);border:2px solid;border-color:#fff #404040 #404040 #fff;color:#000}
+.tbtn button:active{border-color:#404040 #fff #fff #404040}
+.wb{padding:16px;overflow:auto;flex:1}
+.wb h2{font:600 1.6rem/1.1 'Pixelify Sans';color:var(--blue);margin-bottom:10px;text-transform:uppercase}
+.wb p{margin-bottom:10px}
+/* about */
+details{background:#d6d6d6;margin-top:8px;border:2px solid;border-color:#808080 #fff #fff #808080;padding:8px 12px}
+summary{font:600 15px 'Pixelify Sans';color:var(--blue)}
+details p{margin:6px 0 0}
+/* paint layout */
+.paint{display:flex;flex-direction:column;padding:0}
+.menu{display:flex;gap:14px;padding:3px 10px;font-size:13px;border-bottom:1px solid #808080}
+.pbody{display:flex;gap:6px;padding:6px;flex:1;min-height:0}
+.tools{display:grid;grid-template-columns:repeat(2,34px);grid-auto-rows:34px;gap:2px;align-content:start}
+.tool{padding:0;font-size:17px;background:var(--grey);border:2px solid;border-color:#fff #404040 #404040 #fff;display:grid;place-items:center}
+.tool.on{border-color:#404040 #fff #fff #404040;background:#e4e4e4}
+.page{flex:1;background:#fff;border:2px solid;border-color:#404040 #fff #fff #404040;padding:18px;overflow:auto;max-height:60vh}
+.colors{display:flex;flex-wrap:wrap;gap:0;padding:4px 8px 6px;width:100%}
+.colors i{width:16px;height:16px;border:1px solid #444}
+.status{border-top:1px solid #808080;padding:2px 8px;font-size:12px}
+/* project cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
+.pc{background:var(--grey);text-align:left;color:inherit;padding:0;border:2px solid;border-color:#fff #404040 #404040 #fff;box-shadow:inset -1px -1px #808080,4px 4px 0 rgba(0,0,0,.3);transition:transform .15s}
+.pc:hover{transform:translate(-3px,-3px);box-shadow:inset -1px -1px #808080,8px 8px 0 rgba(26,26,208,.5)}
+.pc.hide{display:none}
+.pc b{display:block;background:var(--blue);color:#fff;font:400 13px 'Pixelify Sans';text-align:right;padding:2px 8px}
+.pc div{padding:12px 14px 14px}
+.pc em{font:normal 12px 'Courier Prime';font-weight:700}
+.pc h3{font:600 1.15rem/1.15 'Pixelify Sans';margin:6px 0}
+.pc p{font-size:13px;margin:0;color:#333}
+.tag{display:inline-block;font-size:12px;border:1px solid #666;padding:0 6px;margin:6px 4px 0 0;background:#e4e4e4}
+/* achievements + skills */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:16px}
+.stat{background:#fff;border:2px solid;border-color:#404040 #fff #fff #404040;text-align:center;padding:10px 4px}
+.stat b{display:block;font:600 2.2rem/1 'Pixelify Sans';color:var(--blue)}
+.stat span{font-size:12px}
+.row{display:flex;gap:12px;padding:7px 0;border-top:1px dashed #808080}
+.row time{font:600 15px 'Pixelify Sans';color:var(--blue);min-width:64px}
+.row p{margin:0;font-size:14px}
+.sk{margin-bottom:10px}.sk>span{font:600 15px 'Pixelify Sans';color:var(--blue)}.sk p{margin:2px 0 0}
+.sk div.bar{height:20px;background:#fff;border:2px solid;border-color:#404040 #fff #fff #404040;padding:2px}
+.sk i{display:block;height:100%;width:0;background:repeating-linear-gradient(90deg,var(--blue) 0 10px,transparent 10px 13px);transition:width 1.2s steps(14)}
+.sk span{font:400 14px 'Pixelify Sans'}
+/* quote */
+blockquote{font:400 1.35rem/1.45 'Courier Prime';font-weight:700;margin-bottom:14px}
+.stars{color:var(--blue);font-size:1.4rem;letter-spacing:3px}
+/* contact */
+.ban{background:var(--blue);color:#fff;font:400 15px 'Pixelify Sans';text-align:center;padding:8px;letter-spacing:.5px}
+.ct{text-align:center}
+.ct h2{font-size:1.5rem;text-transform:none;line-height:1.35;margin:10px 0 14px}
+.ct .l{display:block;margin:6px auto;width:max-content;text-decoration:none;color:#111}
+.ct .l:hover{background:var(--navy);color:#fff}
+.ct .b95{margin-top:16px}
+/* task bar + menu */
+#bar{position:absolute;left:0;right:0;bottom:0;height:40px;background:var(--grey);border-top:2px solid #fff;box-shadow:0 -1px #808080;display:flex;gap:4px;align-items:center;padding:3px 4px;z-index:90}
+#bar .b95{padding:3px 10px;font-size:14px}
+#start{display:flex;gap:6px;align-items:center;font-weight:600}
+#start u{width:16px;height:16px;background:conic-gradient(#e33 0 25%,#3b3 0 50%,#37f 0 75%,#fc2 0);display:block}
+#tasks{display:flex;gap:4px;flex:1;overflow:hidden}
+#tasks .b95{max-width:170px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1 1 130px}
+#clock{padding:3px 12px;border:2px solid;border-color:#808080 #fff #fff #808080;font:400 14px 'Pixelify Sans'}
+#smenu{position:absolute;left:4px;bottom:40px;width:230px;background:var(--grey);z-index:100;border:2px solid;border-color:#fff #404040 #404040 #fff;box-shadow:4px 4px 0 rgba(0,0,0,.4)}
+#smenu button{display:block;width:100%;text-align:left;background:none;border:0;padding:8px 14px;font:400 15px 'Pixelify Sans'}
+#smenu button:hover,#smenu button:focus-visible{background:var(--navy);color:#fff}
+#smenu hr{border:0;border-top:1px solid #808080;border-bottom:1px solid #fff;margin:3px 0}
+#ask{position:fixed;left:50%;top:50%;translate:-50% -50%;z-index:20;width:min(420px,92vw)}
+#ask .wb{text-align:center}
+#ask h2{font-size:2.2rem;margin:8px 0 16px}
+#ask .btns{display:flex;gap:14px;justify-content:center;position:relative;height:44px}
+#ask .btns .b95{min-width:100px;transition:transform .15s}
+[hidden]{display:none!important}
+@media(max-width:760px){
+ .win{left:0!important;top:0!important;width:100%!important;height:calc(100vh - 40px);max-height:none}
+ #icons{grid-template-columns:repeat(3,1fr);right:8px;left:8px}.ico{width:auto}
+ .tb [data-a=max]{display:none}.page{max-height:none}.pbody{flex-direction:column}.tools{grid-template-columns:repeat(8,34px)}
+ #tasks .b95{flex:1 1 60px}#clock{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="sky" aria-hidden="true"></div>
+<svg id="hills" viewBox="0 0 1440 460" preserveAspectRatio="none" aria-hidden="true">
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fd23b"/><stop offset="1" stop-color="#2f8a1c"/></linearGradient>
+    <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4fb02a"/><stop offset="1" stop-color="#1c5e12"/></linearGradient>
+    <pattern id="bl" width="7" height="12" patternUnits="userSpaceOnUse"><path d="M1 12l1-9M4 12l-1-6M6 12l1-8" stroke="#c6f27a" stroke-opacity=".38" stroke-width="1"/></pattern>
+  </defs>
+  <path id="h1" d="M0 190C220 70 470 110 720 215S1210 90 1440 150V460H0Z" fill="url(#g1)"/>
+  <path d="M0 190C220 70 470 110 720 215S1210 90 1440 150V460H0Z" fill="url(#bl)"/>
+  <path d="M0 330C300 240 560 300 860 270S1250 230 1440 290V460H0Z" fill="url(#g2)"/>
+  <path d="M0 330C300 240 560 300 860 270S1250 230 1440 290V460H0Z" fill="url(#bl)"/>
+</svg>
+
+<main id="boot">
+  <small>Selected Work and Collaborations</small>
+  <div id="ptf" role="heading" aria-level="1" aria-label="Portfolio"></div>
+  <h1 id="bName">Your Name</h1>
+  <p id="bRole">Your Role</p>
+  <p id="bHandle">@yourhandle</p>
+  <button class="b95 big" id="startBtn">Start</button>
+</main>
+
+<section id="ask" class="win active" hidden role="dialog" aria-label="Are you ready?">
+  <div class="tb"><span>Ready.exe</span></div>
+  <div class="wb">
+    <div style="font-size:42px">⚠️</div>
+    <h2 class="px" id="askT">Are you ready?</h2>
+    <div class="btns"><button class="b95" id="no">No</button><button class="b95" id="yes">Yes</button></div>
+  </div>
+</section>
+
+<div id="desk" hidden>
+  <div id="icons"></div>
+  <div id="layer"></div>
+  <div id="smenu" hidden></div>
+  <footer id="bar">
+    <button class="b95" id="start" aria-haspopup="true"><u></u>Start</button>
+    <div id="tasks"></div>
+    <div id="clock"></div>
+  </footer>
+</div>
+
+<script>
+/* ============ EDIT: ALL YOUR CONTENT LIVES HERE ============ */
+const ME={
+  name:"Maitri", role:"ML · NLP · Big Data · Physical AI", handle:"唐露娟 · @techlearnermaitri",
+  pitch:"Open to internships, research collaborations and new technologies to learn. Say hello!",
+  about:["I build supervised and unsupervised ML and NLP systems, big data analytics, and CI/CD containerized pipelines. I'm also exploring hardware and physical AI.","I work across Azure and Zoho Catalyst, lead student communities on campus, and I'm always curious about the next technology to pick up."],
+  facts:[["What drives me","Intellectual curiosity. I like learning a new technology by building something real with it."],["Languages","Learning Mandarin (唐露娟 is my Chinese name). Scored a perfect 200/200 on HSK 1 and am now studying for HSK 3."],["Currently building","RoboBench (multi-cloud AI & robotics benchmarking), a TinyML self-driving vehicle on ESP32, and deepfake detection for Stable Diffusion models."]],
+  skillGroups:[["Programming & Frameworks",["Python","Java","Flask","OpenCV","YOLO","Scikit-learn","XGBoost","PySpark","Hadoop","Apache Kafka","Apache Pig"]],["Data & Databases",["NumPy","Pandas","MySQL","MongoDB","Redis","Pinecone","Neo4j","Cassandra"]],["Cloud & DevOps",["Azure","Firebase","Zoho Catalyst","Docker","Kubernetes","Jenkins","Ansible","GitHub Actions"]],["Tools & Visualization",["Git","GitHub","Tableau","Matplotlib","Seaborn","Notion"]],["Operating Systems",["Linux","macOS CLI"]],["Soft Skills",["Analytical Thinking","Public Speaking","Adaptability & Teamwork","Intellectual Curiosity","Management","Leadership","Conflict Resolution","Tech Blogging"]]],
+  certs:[["2025","Quantum Computing Course","IIT Roorkee | MeitY | CDAC | Digital India"],["2025","Artificial Intelligence Fundamentals","IBM SkillsBuild"],["2024","Industrial Training in Artificial Intelligence","Edu-versity"],["2024","Industrial Internship Program of Artificial Intelligence","Edu-versity"],["2025","Speaking Effectively","Upgrad"],["2025","Writing Proficiently","Upgrad"],["HSK 1","200 / 200 (full score)","Chinese proficiency exam. Now learning HSK 3."]],
+  projects:[
+    {title:"Deepfake Detection for Stable Diffusion",cat:"GenAI",label:"In progress",icon:"🕵️",short:"Detecting images generated by Stable Diffusion models.",long:"A deepfake detection system aimed at images produced by Stable Diffusion models. Currently in development.",tags:["Deep Learning","Stable Diffusion","Detection"],live:"",code:"https://github.com/techlearnermaitri"},
+    {title:"RoboBench",cat:"Cloud",label:"In progress",icon:"🤖",short:"Multi-cloud AI & robotics benchmarking platform.",long:"Currently building a benchmarking platform for AI and robotics workloads across clouds, using Azure, Zoho Catalyst and Firebase.",tags:["Azure","Zoho Catalyst","Firebase"],live:"",code:"https://github.com/techlearnermaitri"},
+    {title:"TinyML Self-Driving Vehicle",cat:"Hardware",label:"In progress",icon:"🚗",short:"Low-cost self-driving car on an ESP32 using TinyML.",long:"A cost-effective self-driving vehicle that runs on an ESP32 using TinyML for lane following. The goal is to explore how to run large models on resource-constrained devices without cloud usage.",tags:["ESP32","TinyML","Embedded AI"],live:"",code:"https://github.com/techlearnermaitri"},
+    {title:"Production-Ready RAG Pipeline",cat:"GenAI",label:"NLP",icon:"📚",short:"Cross-document question answering with retrieval-augmented generation.",long:"A production-ready RAG pipeline for cross-document QA, built with LangChain, Pinecone, Groq and FastAPI.",tags:["LangChain","Pinecone","Groq","FastAPI"],live:"",code:"https://github.com/techlearnermaitri"},
+    {title:"Stellar Classification",cat:"ML",label:"Website",icon:"🌌",short:"Classify stars using SDSS DR17 with 7 ML algorithms.",long:"A website for stellar classification built on the SDSS DR17 dataset, comparing 7 machine learning algorithms.",tags:["Scikit-learn","XGBoost","Flask"],live:"",code:"https://github.com/techlearnermaitri"},
+    {title:"Amazon Product Analytics",cat:"Big Data",label:"Big Data",icon:"📦",short:"Product analytics and best-seller prediction.",long:"Amazon product analytics and best seller prediction using PySpark and Hadoop.",tags:["PySpark","Hadoop"],live:"",code:"https://github.com/techlearnermaitri"},
+    {title:"Consumer Research Analytics",cat:"Big Data",label:"Big Data",icon:"🛒",short:"Optimizing product development with distributed analytics.",long:"Consumer research that optimizes product development through PySpark MLlib and distributed analytics.",tags:["PySpark","MLlib"],live:"",code:"https://github.com/techlearnermaitri"},
+    {title:"Student Social Media Analysis",cat:"Big Data",label:"Big Data",icon:"📱",short:"Global student social media analysis in Hadoop.",long:"A global analysis of student social media usage, processed in Hadoop.",tags:["Hadoop"],live:"",code:"https://github.com/techlearnermaitri"},
+    {title:"Deadline Desk",cat:"Cloud",label:"Multicloud",icon:"⏰",short:"A multicloud, automated, gamified study space.",long:"Deadline Desk is a multicloud, all-in-one automated and gamified study space.",tags:["Multicloud","Automation"],live:"",code:"https://github.com/techlearnermaitri"}
+  ],
+  stats:[[9,"Projects",""],[6,"Subjects TAed",""],[6,"Certificates",""],[200,"HSK 1 Score","/200"]],
+  timeline:[["2026","Chairperson · IET on Campus","Also served as Vice Chair of IET on Campus in 2026."],["2025–26","HOD · SPARC Academic Society Research Dept",""],["Now","NAAC Student Ambassador","Also AHOD of the Tech Department at TEDx ATLAS University."],["TA","Teaching Assistant for 6 subjects","Teaching since the first year of my degree."],["Events","Hosted 2 Master Classes and a Townhall","Plus other events."],["Care","Anti-Ragging Squad Student Coordinator","Previously part of the Versova Beach Cleanup Project and the Siddharth Nagar Plastic Drive by Afroz Shah."]],
+  socials:[["GitHub","https://github.com/techlearnermaitri"],["LinkedIn","https://www.linkedin.com/in/techlearnermaitrimore"]]
+};
+/* ============ ENGINE ============ */
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+document.title=ME.name+' · Portfolio';
+$('#bName').textContent=ME.name;$('#bRole').textContent=ME.role;$('#bHandle').textContent=ME.handle;
+$('#ptf').innerHTML=[...'PORTFOLIO'].map(c=>`<span>${c}</span>`).join('');
+/* clouds */
+$('#sky').innerHTML=[[8,22,380,150,150],[60,10,420,170,110],[30,48,320,120,170],[75,38,300,100,130],[-5,6,260,100,200]]
+  .map(c=>`<div class="cloud" style="left:${c[0]}%;top:${c[1]}%;width:${c[2]}px;height:${c[3]}px;animation-duration:${c[4]}s;animation-delay:-${c[4]/2}s"></div>`).join('');
+const colors=['#000','#808080','#800000','#808000','#008000','#008080','#000080','#800080','#fff','#c0c0c0','#f00','#ff0','#0f0','#0ff','#00f','#f0f'];
+const pal=()=>`<div class="colors" aria-hidden="true">${colors.map(c=>`<i style="background:${c}"></i>`).join('')}</div>`;
+const menu=()=>`<div class="menu" aria-hidden="true"><span>File</span><span>Edit</span><span>View</span><span>Image</span><span>Help</span></div>`;
+const tags=a=>a.map(t=>`<span class="tag">${t}</span>`).join('');
+
+/* window content */
+const W={
+ about:{t:'About Me.txt',ic:'📝',w:500,html:()=>`<h2>Hello, I'm ${ME.name}</h2>${ME.about.map(p=>`<p>${p}</p>`).join('')}${ME.facts.map(f=>`<details><summary>${f[0]}</summary><p>${f[1]}</p></details>`).join('')}`},
+ projects:{t:'Projects - Paint',ic:'🎨',w:720,paint:1,html:()=>{
+   const cats=['All',...new Set(ME.projects.map(p=>p.cat))],ic=['🖱️','✏️','🖌️','🔍','🧽','🖍️'];
+   return `${menu()}<div class="pbody"><div class="tools" role="group" aria-label="Filter projects">${cats.map((c,i)=>`<button class="tool${i?'':' on'}" data-c="${c}" title="${c}" aria-label="${c}">${ic[i%6]}</button>`).join('')}</div>
+   <div class="page"><div class="cards">${ME.projects.map((p,i)=>`<button class="pc" data-i="${i}" data-cat="${p.cat}"><b>0${i+1}</b><div><em>${p.label}</em><h3>${p.title}</h3><p>${p.short}</p>${tags(p.tags)}</div></button>`).join('')}</div></div></div>${pal()}<div class="status">Click a project to open it.</div>`},
+   init(el){const t=$$('.tool',el);t.forEach(b=>b.onclick=()=>{t.forEach(x=>x.classList.remove('on'));b.classList.add('on');$$('.pc',el).forEach(k=>k.classList.toggle('hide',b.dataset.c!=='All'&&k.dataset.cat!==b.dataset.c))});
+     $$('.pc',el).forEach(k=>k.onclick=()=>openWin('p'+k.dataset.i,projWin(+k.dataset.i)))}},
+ wins:{t:'Achievements',ic:'🏆',w:560,html:()=>`<h2>Achievements</h2><div class="stats">${ME.stats.map(s=>`<div class="stat"><b data-n="${s[0]}" data-s="${s[2]}">0</b><span>${s[1]}</span></div>`).join('')}</div>${ME.timeline.map(t=>`<div class="row"><time>${t[0]}</time><div><b>${t[1]}</b><p>${t[2]}</p></div></div>`).join('')}`,
+   init(el){$$('.stat b',el).forEach(b=>{const n=+b.dataset.n,t0=performance.now();(function f(t){const k=Math.min(1,(t-t0)/1200);b.textContent=Math.round(n*k)+b.dataset.s;if(k<1)requestAnimationFrame(f)})(t0)})}},
+ skills:{t:'Skills.exe',ic:'💾',w:540,html:()=>`<h2>Skills</h2>${ME.skillGroups.map(g=>`<div class="sk"><span>${g[0]}</span><p>${tags(g[1])}</p></div>`).join('')}`},
+ certs:{t:'Certificates',ic:'📜',w:520,html:()=>`<h2>Certificates</h2>${ME.certs.map(c=>`<div class="row"><time>${c[0]}</time><div><b>${c[1]}</b><p>${c[2]}</p></div></div>`).join('')}`},
+ contact:{t:"Let's Work Together",ic:'✉️',w:480,html:()=>`<div class="ban">✦ Let's Work Together ✦</div><div class="wb ct"><h2>${ME.pitch}</h2><b>${ME.name}</b><br>${ME.role}<br><br>
+   <span class="l">🔔 ${ME.handle}</span>
+   <div>${ME.socials.map(s=>`<a class="b95" style="display:inline-block;margin:10px 4px 0;text-decoration:none" href="${s[1]}" target="_blank" rel="noopener">${s[0]}</a>`).join('')}</div></div>`,
+   init(el){const yc=$('#yesC',el);if(yc)yc.onclick=e=>{(navigator.clipboard?navigator.clipboard.writeText(ME.email):Promise.reject()).then(()=>e.target.textContent='Copied! ✓',()=>location.href='mailto:'+ME.email)}}}
+};
+W.contact.bare=1;
+const projWin=i=>{const p=ME.projects[i];return{t:p.title+'.exe',ic:p.icon,w:480,html:()=>`<h2>${p.icon} ${p.title}</h2><p>${p.long}</p><p>${tags(p.tags)}</p><p style="margin-top:14px">${p.live?`<a class="b95" style="text-decoration:none;display:inline-block;margin-right:8px" href="${p.live}" target="_blank" rel="noopener">View live</a>`:''}${p.code?`<a class="b95" style="text-decoration:none;display:inline-block" href="${p.code}" target="_blank" rel="noopener">Source code</a>`:''}</p>`}};
+
+/* window manager */
+let z=10,n=0;const open={};
+function focusWin(id){Object.entries(open).forEach(([k,o])=>{const a=k===id;o.el.classList.toggle('active',a);o.tk.classList.toggle('on',a)});open[id].el.style.zIndex=++z}
+function openWin(id,d){
+  if(open[id]){open[id].el.hidden=false;focusWin(id);return}
+  const el=document.createElement('section'),w=Math.min(d.w,innerWidth-12),k=n++%6;
+  el.className='win';el.setAttribute('role','dialog');el.setAttribute('aria-label',d.t);el.style.width=w+'px';
+  el.style.left=Math.max(6,(innerWidth-w)/2+(k-2.5)*34+40)+'px';el.style.top=(34+k*30)+'px';
+  el.innerHTML=`<div class="tb"><span>${d.ic} ${d.t}</span><div class="tbtn"><button data-a="min" aria-label="Minimize">_</button><button data-a="max" aria-label="Maximize">□</button><button data-a="x" aria-label="Close">×</button></div></div>${d.paint?`<div class="wb paint">${d.html()}</div>`:d.bare?d.html():`<div class="wb">${d.html()}</div>`}`;
+  $('#layer').appendChild(el);
+  const tk=document.createElement('button');tk.className='b95';tk.textContent=d.ic+' '+d.t;$('#tasks').appendChild(tk);
+  open[id]={el,tk};
+  tk.onclick=()=>{const o=open[id];if(!o.el.hidden&&o.el.classList.contains('active')){o.el.hidden=true;tk.classList.remove('on')}else{o.el.hidden=false;focusWin(id)}};
+  el.addEventListener('pointerdown',()=>focusWin(id));
+  el.querySelector('.tbtn').onclick=e=>{const a=e.target.dataset.a;if(a==='x'){el.remove();tk.remove();delete open[id]}else if(a==='min'){el.hidden=true;tk.classList.remove('on')}else if(a==='max')el.classList.toggle('max')};
+  const tb=$('.tb',el);tb.addEventListener('pointerdown',e=>{if(e.target.closest('.tbtn')||el.classList.contains('max')||innerWidth<=760)return;
+    const ox=e.clientX-el.offsetLeft,oy=e.clientY-el.offsetTop;tb.setPointerCapture(e.pointerId);
+    tb.onpointermove=m=>{el.style.left=Math.min(innerWidth-60,Math.max(-el.offsetWidth+80,m.clientX-ox))+'px';el.style.top=Math.min(innerHeight-80,Math.max(0,m.clientY-oy))+'px'};
+    tb.onpointerup=()=>{tb.onpointermove=null}});
+  if(d.init)d.init(el);focusWin(id)}
+
+/* icons + start menu */
+const ids=['about','projects','wins','skills','certs','contact'];
+$('#icons').innerHTML=ids.map(i=>`<button class="ico" data-w="${i}"><i>${W[i].ic}</i><span>${W[i].t.replace(' - Paint','')}</span></button>`).join('');
+$('#icons').onclick=e=>{const b=e.target.closest('.ico');if(b)openWin(b.dataset.w,W[b.dataset.w])};
+$('#smenu').innerHTML=ids.map(i=>`<button data-w="${i}">${W[i].ic}  ${W[i].t}</button>`).join('')+`<hr><button data-w="off">🔌  Shut down…</button>`;
+$('#start').onclick=e=>{e.stopPropagation();$('#smenu').hidden=!$('#smenu').hidden};
+addEventListener('click',e=>{if(!e.target.closest('#smenu,#start'))$('#smenu').hidden=true});
+$('#smenu').onclick=e=>{const b=e.target.closest('button');if(!b)return;$('#smenu').hidden=true;
+  if(b.dataset.w==='off'){Object.values(open).forEach(o=>{o.el.remove();o.tk.remove()});Object.keys(open).forEach(k=>delete open[k]);$('#desk').hidden=true;$('#boot').classList.remove('off')}
+  else openWin(b.dataset.w,W[b.dataset.w])};
+const clk=()=>$('#clock').textContent=new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});clk();setInterval(clk,20000);
+
+/* boot flow */
+$('#startBtn').onclick=()=>{$('#ask').hidden=false;$('#yes').focus()};
+let dodge=0;const no=$('#no');
+no.addEventListener('pointerenter',e=>{if(e.pointerType!=='mouse'||dodge>6)return;dodge++;no.style.transform=`translate(${(Math.random()-.5)*160}px,${(Math.random()-.5)*60}px)`});
+no.onclick=()=>{$('#askT').textContent=dodge>6?'Too late. Go on!':'Not an option 🙂'};
+$('#yes').onclick=()=>{$('#ask').hidden=true;$('#boot').classList.add('off');$('#desk').hidden=false;setTimeout(()=>openWin('about',W.about),350)};
+</script>
+</body>
+</html>
